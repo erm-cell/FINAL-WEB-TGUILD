@@ -1,0 +1,24 @@
+# [t]guild
+
+> [t]guild is a web design business. We build friendly, mobile-friendly websites for businesses (GuildPack) and personal branding portfolio websites for freelancers and creators (PersonalGuild). Slogan: "Tech made simple. Business made bigger."
+
+Contact: cs@tguild.tech | WhatsApp Business +62 831-7761-0112
+LinkedIn: https://www.linkedin.com/company/t-guild/
+Instagram: https://www.instagram.com/tguild.tech/
+Facebook: https://www.facebook.com/profile.php?id=61596245285402
+
+## Pages
+- [English site](https://tguild.tech/): packages, prices in USD, FAQ, contact form
+- [Situs Bahasa Indonesia](https://tguild.tech/id): paket, harga dalam rupiah, contoh portofolio, FAQ, kontak
+- [Privacy Policy](https://tguild.tech/privacy)
+- [Terms & Conditions](https://tguild.tech/terms)
+- [Cookie Policy](https://tguild.tech/cookies)
+
+## Key facts
+- Every GuildPack and PersonalGuild package includes the domain for the first year at no extra cost (for example .shop or .tech).
+- GuildPack 1: US$1,050 (was $1,400). 3 pages, 3 working days, 1 revision, 1 logo.
+- GuildPack 2: US$1,350 (was $1,950). Up to 5 pages, 5 working days, 2 revisions, 1 logo, 1 extra language, 1 free extra design.
+- GuildPack 3: US$1,650 (was $2,400). Up to 10 pages, 5 working days, 4 revisions, 1 logo, 2 extra languages, 2 free extra designs.
+- GuildPack yearly renewal: US$500 per year (Rp850,000 on the Indonesian site, depending on the domain), paid in the month the website first went live.
+- PersonalGuild: Beginner US$150, Intermediate US$550, Advanced US$1,400. Renewal price is agreed after the client chooses a domain.
+- Process: tell us about your business, send a sketch (Canva or any app), we build it, revisions and domain choice, go live.
