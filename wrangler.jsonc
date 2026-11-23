@@ -1,0 +1,8 @@
+{
+  "name": "final-web-tguild",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-19",
+  "keep_vars": true,
+  "observability": { "enabled": true },
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] }
+}
