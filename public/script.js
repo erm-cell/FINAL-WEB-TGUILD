@@ -1,90 +1,139 @@
 // ---- SETUP ----
-// Set these to your own endpoints (e.g. Cloudflare Pages Functions at /api/contact and /api/subscribe,
-// or a form service). Left empty, the forms fall back to WhatsApp / email so nothing is lost.
-const CONTACT_ENDPOINT = "";
-const NEWSLETTER_ENDPOINT = "";
+// Both endpoints are served by _worker.js (Cloudflare Pages), which emails you through Brevo.
+// If they are not available (for example on a plain static host), the form falls back to WhatsApp.
+const QUOTE_ENDPOINT = "/api/quote";
+const NEWSLETTER_ENDPOINT = "/api/subscribe";
 const WHATSAPP = "6283177610112";
 const EMAIL = "cs@tguild.tech";
 // ---------------
 
 const T = {
   en: {
-    name: "Please tell us your name.",
-    reach: "Please add an email or a phone number so we can reply.",
-    badEmail: "That email doesn’t look right. Please check it.",
-    need: "Please tell us what you need or what you’d like to ask.",
-    sent: "Thank you! Your message is on its way. We’ll reply soon.",
-    fail: "Sorry, that didn’t send. Please message us on WhatsApp instead.",
-    wa: "Opening WhatsApp so you can send your message.",
-    hi: (n, c) => `Hi [t]guild! I'm ${n}${c ? " from " + c : ""}.`,
-    contact: "Contact", nl: "Please add me to the newsletter.",
-    plan: p => `Hi! I’m interested in the ${p} package.`,
+    nameBad: "Please tell us your name.",
+    contactBad: "Please enter a valid email or WhatsApp number.",
+    sending: "Sending…",
+    send: "Send my request",
+    fail: "Sorry, that didn’t send.",
+    waLink: "Message us on WhatsApp instead",
+    hi: (n, t, p, c) => `Hi [t]guild! I'm ${n}. I'm interested in: ${t}, ${p}. You can reach me at ${c}.`,
+    chip: p => `We’ll quote: ${p}`,
     newsBad: "Please enter a valid email address.",
     newsOk: "You’re subscribed. Welcome!",
-    newsFail: "Sorry, we couldn’t subscribe you. Please try again.",
-    subj: "Newsletter subscription",
-    body: v => `Please subscribe ${v} to the [t]guild newsletter.`
+    newsFail: "Sorry, we couldn’t subscribe you. Please try again or email " + EMAIL + "."
   },
   id: {
-    name: "Mohon isi nama Anda.",
-    reach: "Mohon isi email atau nomor telepon agar kami bisa membalas.",
-    badEmail: "Format email belum benar. Mohon periksa lagi.",
-    need: "Mohon tulis kebutuhan atau pertanyaan Anda.",
-    sent: "Terima kasih! Pesan Anda sedang dikirim. Kami akan segera membalas.",
-    fail: "Maaf, pesan belum terkirim. Silakan hubungi kami lewat WhatsApp.",
-    wa: "Membuka WhatsApp agar Anda bisa mengirim pesan.",
-    hi: (n, c) => `Halo [t]guild! Saya ${n}${c ? " dari " + c : ""}.`,
-    contact: "Kontak", nl: "Mohon daftarkan saya ke newsletter.",
-    plan: p => `Halo! Saya tertarik dengan paket ${p}.`,
+    nameBad: "Mohon isi nama Anda.",
+    contactBad: "Mohon isi email atau nomor WhatsApp yang valid.",
+    sending: "Mengirim…",
+    send: "Kirim permintaan",
+    fail: "Maaf, permintaan belum terkirim.",
+    waLink: "Hubungi kami lewat WhatsApp",
+    hi: (n, t, p, c) => `Halo [t]guild! Saya ${n}. Saya tertarik dengan: ${t}, ${p}. Anda bisa menghubungi saya di ${c}.`,
+    chip: p => `Kami akan menawarkan: ${p}`,
     newsBad: "Mohon masukkan alamat email yang valid.",
     newsOk: "Anda sudah berlangganan. Selamat datang!",
-    newsFail: "Maaf, kami belum bisa mendaftarkan Anda. Silakan coba lagi.",
-    subj: "Berlangganan newsletter",
-    body: v => `Mohon daftarkan ${v} ke newsletter [t]guild.`
+    newsFail: "Maaf, kami belum bisa mendaftarkan Anda. Coba lagi atau kirim email ke " + EMAIL + "."
   }
 };
 const L = T[document.documentElement.lang === "id" ? "id" : "en"];
-
-document.getElementById("yr").textContent = new Date().getFullYear();
-const show = (el, text, ok) => { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); };
 const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const phoneOk = v => /^[+()\-\s\d]{8,20}$/.test(v) && v.replace(/\D/g, "").length >= 8 && v.replace(/\D/g, "").length <= 15;
+const show = (el, text, ok) => { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); };
 
-async function send(url, data) {
+async function post(url, data) {
   const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
   if (!r.ok) throw new Error("failed");
 }
 
-document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", () => {
-  const m = document.getElementById("message");
-  if (!m.value) m.value = L.plan(b.dataset.plan);
-}));
+/* ---------- 3-step quote form ---------- */
+(function () {
+  const f = document.getElementById("quoteForm");
+  if (!f) return;
+  const PK = {
+    business: { small: "GuildPack 1", medium: "GuildPack 2", large: "GuildPack 3" },
+    personal: { small: "PersonalGuild Beginner", medium: "PersonalGuild Intermediate", large: "PersonalGuild Advanced" }
+  };
+  const TN = { business: "Business website", personal: "Personal portfolio", unsure: "Not sure yet" };
+  const SZ = { small: "Small", medium: "Medium", large: "Large" };
+  const st = { type: "", size: "" };
+  let step = 1;
+  const sets = f.querySelectorAll(".qs"), dots = f.querySelectorAll(".qdots i"), stepEl = f.querySelector(".qstep"), chip = f.querySelector(".qchip"), msg = document.getElementById("formMsg");
+  const stepText = stepEl.dataset.t;
 
-document.getElementById("contactForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const f = e.target, msg = document.getElementById("formMsg");
-  const d = { name: f.name.value.trim(), company: f.company.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), message: f.message.value.trim(), newsletter: f.newsletter.checked };
-  if (!d.name) return show(msg, L.name, false);
-  if (!d.email && !d.phone) return show(msg, L.reach, false);
-  if (d.email && !emailOk(d.email)) return show(msg, L.badEmail, false);
-  if (!d.message) return show(msg, L.need, false);
-  if (CONTACT_ENDPOINT) {
-    try { await send(CONTACT_ENDPOINT, d); f.reset(); show(msg, L.sent, true); }
-    catch { show(msg, L.fail, false); }
-  } else {
-    const text = `${L.hi(d.name, d.company)}\n\n${d.message}\n\n${L.contact}: ${[d.email, d.phone].filter(Boolean).join(" / ")}${d.newsletter ? "\n" + L.nl : ""}`;
-    window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text), "_blank", "noopener");
-    show(msg, L.wa, true);
-  }
-});
+  const pack = () => (PK[st.type === "personal" ? "personal" : "business"] || {})[st.size] || "";
 
-document.getElementById("newsForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const v = document.getElementById("newsEmail").value.trim(), msg = document.getElementById("newsMsg");
-  if (!emailOk(v)) return show(msg, L.newsBad, false);
-  if (NEWSLETTER_ENDPOINT) {
-    try { await send(NEWSLETTER_ENDPOINT, { email: v }); e.target.reset(); show(msg, L.newsOk, true); }
-    catch { show(msg, L.newsFail, false); }
-  } else {
-    window.location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(L.subj) + "&body=" + encodeURIComponent(L.body(v));
+  function labels() {
+    const k = st.type === "personal" ? "p" : "b";
+    f.querySelectorAll('.qo[data-k="size"]').forEach(b => { b.textContent = b.dataset[k]; });
   }
-});
+  function mark(k, v) {
+    f.querySelectorAll('.qo[data-k="' + k + '"]').forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v));
+  }
+  function go(n, focus) {
+    step = n;
+    sets.forEach((s, i) => { s.hidden = i !== n - 1; });
+    dots.forEach((d, i) => { d.className = i === n - 1 ? "on" : i < n - 1 ? "ok" : ""; });
+    stepEl.textContent = stepText.replace("{n}", n);
+    if (n === 3) chip.textContent = L.chip(pack() || "—");
+    if (focus !== false) {
+      const t = sets[n - 1].querySelector("button,input");
+      if (t) setTimeout(() => t.focus({ preventScroll: true }), 60);
+    }
+  }
+
+  f.addEventListener("click", e => {
+    const o = e.target.closest(".qo");
+    if (o) {
+      st[o.dataset.k] = o.dataset.v;
+      mark(o.dataset.k, o.dataset.v);
+      if (o.dataset.k === "type") { labels(); if (st.size) mark("size", st.size); setTimeout(() => go(2), 220); }
+      else setTimeout(() => go(3), 220);
+      return;
+    }
+    if (e.target.closest(".qback")) go(Math.max(1, step - 1));
+  });
+
+  // "Choose GuildPack X" buttons in the pricing section pre-fill steps 1 and 2
+  document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", () => {
+    const p = b.dataset.plan;
+    st.type = /^Personal/.test(p) ? "personal" : "business";
+    st.size = /Beginner|1$/.test(p) ? "small" : /Intermediate|2$/.test(p) ? "medium" : "large";
+    mark("type", st.type); labels(); mark("size", st.size);
+    go(3, false);
+  }));
+
+  f.addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = f.name.value.trim(), contact = f.contact.value.trim();
+    if (!name) return show(msg, L.nameBad, false);
+    if (!emailOk(contact) && !phoneOk(contact)) return show(msg, L.contactBad, false);
+    const btn = f.querySelector('button[type="submit"]');
+    const data = { name, contact, type: TN[st.type] || "Not sure yet", size: SZ[st.size] || "-", pack: pack() || "-", newsletter: f.newsletter.checked, website: f.website.value, lang: document.documentElement.lang };
+    btn.disabled = true; btn.textContent = L.sending; msg.className = "msg";
+    try {
+      await post(QUOTE_ENDPOINT, data);
+      f.querySelector(".qwrap").hidden = true;
+      f.querySelector(".qdone").hidden = false;
+      f.querySelector(".qdone").focus();
+    } catch (err) {
+      btn.disabled = false; btn.textContent = L.send;
+      const wa = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(L.hi(name, data.type, data.pack, contact));
+      msg.className = "msg err"; msg.textContent = L.fail + " ";
+      const a = document.createElement("a"); a.href = wa; a.target = "_blank"; a.rel = "noopener"; a.textContent = L.waLink;
+      msg.appendChild(a);
+    }
+  });
+})();
+
+/* ---------- Newsletter ---------- */
+(function () {
+  const n = document.getElementById("newsForm");
+  if (!n) return;
+  n.addEventListener("submit", async e => {
+    e.preventDefault();
+    const v = document.getElementById("newsEmail").value.trim(), msg = document.getElementById("newsMsg");
+    if (!emailOk(v)) return show(msg, L.newsBad, false);
+    try { await post(NEWSLETTER_ENDPOINT, { email: v, lang: document.documentElement.lang }); n.reset(); show(msg, L.newsOk, true); }
+    catch (err) { show(msg, L.newsFail, false); }
+  });
+})();

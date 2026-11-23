@@ -194,3 +194,39 @@ header nav.open .btn{color:#fff;text-align:center;padding:12px}
 .total .now.done{animation:pop .6s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes pop{40%{transform:scale(1.14)}}
 @media(prefers-reduced-motion:reduce){.total .now.done{animation:none}}
+
+/* ---- 3-step quote form ---- */
+.qf{background:#fff;border-radius:24px;padding:30px;border:1px solid var(--line);box-shadow:0 24px 50px -30px rgba(19,33,63,.45)}
+.qeye{margin:0 0 12px;font:700 12px "DM Sans",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.qeye b{color:var(--blue)}
+.qdots{display:flex;gap:8px;margin-bottom:8px}
+.qdots i{width:34px;height:6px;border-radius:3px;background:var(--line);transition:background .3s,width .3s}
+.qdots i.on{background:var(--yellow);width:52px}
+.qdots i.ok{background:var(--blue)}
+.qstep{margin:0 0 18px;color:var(--muted);font-size:14px}
+.qs{border:0;padding:0;margin:0;min-width:0;animation:qin .35s ease both}
+.qs[hidden]{display:none}
+.qs legend{padding:0;margin-bottom:20px;font:600 clamp(32px,5vw,44px)/1.05 "Cormorant Garamond",Georgia,serif;color:var(--ink)}
+.qopts{display:flex;flex-wrap:wrap;gap:12px}
+.qo{border:2px solid var(--blue);background:#fff;color:var(--blue);border-radius:999px;padding:13px 24px;font:700 16px "DM Sans",sans-serif;cursor:pointer;transition:transform .2s,background .2s,color .2s}
+.qo:hover{background:var(--tint);transform:translateY(-2px)}
+.qo[aria-pressed=true]{background:var(--blue);color:#fff}
+.qback{background:none;border:0;padding:0;margin-top:18px;color:var(--muted);font:500 14px "DM Sans",sans-serif;text-decoration:underline;cursor:pointer}
+.qchip{display:inline-block;margin:0 0 16px;background:var(--tint);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:14px;font-weight:700}
+.qin{margin-bottom:14px}
+.qact{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.qact .qback{margin:0}
+.qs .check{margin:4px 0 12px}
+.qs .legal-note{margin-top:14px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.qdone{text-align:center;padding:18px 0 8px;animation:qin .4s ease both}
+.qdone[hidden]{display:none}
+.qdone h3{font:600 34px/1.1 "Cormorant Garamond",Georgia,serif;margin:16px 0 6px}
+.qdone p{margin:0;color:var(--muted)}
+.qck{width:76px;height:76px;animation:pop .6s cubic-bezier(.2,.9,.3,1.4)}
+.qck circle{fill:var(--ok)}
+.qck path{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .3s forwards}
+.msg a{color:inherit;font-weight:700;text-decoration:underline}
+@keyframes qin{from{opacity:0;transform:translateX(24px)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.qs,.qdone,.qck,.qck path{animation:none!important}.qck path{stroke-dashoffset:0}}

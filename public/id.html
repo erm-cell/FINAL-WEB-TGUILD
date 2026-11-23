@@ -259,24 +259,33 @@
   <div class="wrap">
     <div>
       <div class="sec-head">
-        <h2>Yuk, bicarakan website Anda</h2>
-        <p>Ceritakan kebutuhan Anda atau tanyakan apa saja. Kami akan segera membalas.</p>
+        <h2>Dapatkan penawaran dalam 3 klik</h2>
+        <p>Satu pertanyaan sekali jalan. Jawaban Anda langsung masuk ke inbox kami.</p>
       </div>
-      <form id="contactForm" novalidate>
-        <div class="two">
-          <div><label for="name">Nama Anda</label><input type="text" id="name" name="name" autocomplete="name" required></div>
-          <div><label for="company">Nama perusahaan <small>(opsional)</small></label><input type="text" id="company" name="company" autocomplete="organization"></div>
+      <form id="quoteForm" class="qf" novalidate>
+        <div class="qwrap">
+          <p class="qeye"><b>Satu pertanyaan sekali jalan</b></p>
+          <div class="qdots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+          <p class="qstep" aria-live="polite" data-t="Langkah {n} dari 3">Langkah 1 dari 3</p>
+          <fieldset class="qs"><legend>Apa yang Anda butuhkan?</legend><div class="qopts"><button type="button" class="qo" data-k="type" data-v="business" aria-pressed="false">Website bisnis</button><button type="button" class="qo" data-k="type" data-v="personal" aria-pressed="false">Portofolio pribadi</button><button type="button" class="qo" data-k="type" data-v="unsure" aria-pressed="false">Belum yakin</button></div></fieldset>
+          <fieldset class="qs" hidden><legend>Kira-kira sebesar apa?</legend><div class="qopts"><button type="button" class="qo" data-k="size" data-v="small" data-b="Kecil · hingga 3 halaman" data-p="Kecil · 1 halaman" aria-pressed="false">Kecil · hingga 3 halaman</button><button type="button" class="qo" data-k="size" data-v="medium" data-b="Sedang · hingga 5 halaman" data-p="Sedang · hingga 3 halaman" aria-pressed="false">Sedang · hingga 5 halaman</button><button type="button" class="qo" data-k="size" data-v="large" data-b="Besar · hingga 10 halaman" data-p="Besar · hingga 5 halaman" aria-pressed="false">Besar · hingga 10 halaman</button></div><button type="button" class="qback">Kembali</button></fieldset>
+          <fieldset class="qs" hidden>
+            <legend>Ke mana kami menghubungi Anda?</legend>
+            <p class="qchip"></p>
+            <div class="qin"><label for="qn">Nama Anda</label><input type="text" id="qn" name="name" autocomplete="name" maxlength="100" required></div>
+            <div class="qin"><label for="qc">Email atau nomor WhatsApp</label><input type="text" id="qc" name="contact" autocomplete="email" maxlength="120" required></div>
+            <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <label class="check"><input type="checkbox" name="newsletter"> Ya, kirimi saya newsletter</label>
+            <div class="msg" id="formMsg" role="status" aria-live="polite"></div>
+            <div class="qact"><button class="btn" type="submit">Kirim permintaan</button><button type="button" class="qback">Kembali</button></div>
+            <p class="legal-note">Dengan mengirim ini, Anda setuju kami memakai data Anda untuk membalas, sebagaimana dijelaskan dalam <a href="/privacy-id">Kebijakan Privasi</a> kami.</p>
+          </fieldset>
         </div>
-        <div class="two">
-          <div><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email"></div>
-          <div><label for="phone">Telepon / WhatsApp</label><input type="tel" id="phone" name="phone" autocomplete="tel"></div>
+        <div class="qdone" hidden tabindex="-1" role="status">
+          <svg class="qck" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25"/><path d="M15 27l8 8 15-16"/></svg>
+          <h3>Selesai — kami segera menghubungi Anda.</h3>
+          <p>Permintaan Anda sudah masuk ke inbox kami.</p>
         </div>
-        <div class="hint">Mohon isi minimal email atau nomor telepon.</div>
-        <div><label for="message">Apa yang bisa kami bantu?</label><textarea id="message" name="message" required placeholder="Ceritakan kebutuhan Anda, atau ajukan pertanyaan"></textarea></div>
-        <label class="check"><input type="checkbox" name="newsletter" id="nl"> Ya, kirimi saya newsletter</label>
-        <div class="msg" id="formMsg" role="status" aria-live="polite"></div>
-        <div><button class="btn" type="submit">Kirim pesan</button></div>
-        <p class="legal-note">Dengan mengirim formulir ini, Anda setuju kami memakai data Anda untuk membalas pesan, sebagaimana dijelaskan dalam <a href="/privacy-id">Kebijakan Privasi</a> kami.</p>
       </form>
     </div>
 

@@ -259,24 +259,33 @@
   <div class="wrap">
     <div>
       <div class="sec-head">
-        <h2>Let’s talk about your website</h2>
-        <p>Tell us what you need or ask us anything. We’ll get back to you soon.</p>
+        <h2>Get your quote in 3 clicks</h2>
+        <p>One question at a time. Your answers go straight to our inbox.</p>
       </div>
-      <form id="contactForm" novalidate>
-        <div class="two">
-          <div><label for="name">Your name</label><input type="text" id="name" name="name" autocomplete="name" required></div>
-          <div><label for="company">Company name <small>(optional)</small></label><input type="text" id="company" name="company" autocomplete="organization"></div>
+      <form id="quoteForm" class="qf" novalidate>
+        <div class="qwrap">
+          <p class="qeye"><b>One question at a time</b></p>
+          <div class="qdots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+          <p class="qstep" aria-live="polite" data-t="Step {n} of 3">Step 1 of 3</p>
+          <fieldset class="qs"><legend>What do you need?</legend><div class="qopts"><button type="button" class="qo" data-k="type" data-v="business" aria-pressed="false">Business website</button><button type="button" class="qo" data-k="type" data-v="personal" aria-pressed="false">Personal portfolio</button><button type="button" class="qo" data-k="type" data-v="unsure" aria-pressed="false">Not sure yet</button></div></fieldset>
+          <fieldset class="qs" hidden><legend>How big, roughly?</legend><div class="qopts"><button type="button" class="qo" data-k="size" data-v="small" data-b="Small · up to 3 pages" data-p="Small · 1 page" aria-pressed="false">Small · up to 3 pages</button><button type="button" class="qo" data-k="size" data-v="medium" data-b="Medium · up to 5 pages" data-p="Medium · up to 3 pages" aria-pressed="false">Medium · up to 5 pages</button><button type="button" class="qo" data-k="size" data-v="large" data-b="Large · up to 10 pages" data-p="Large · up to 5 pages" aria-pressed="false">Large · up to 10 pages</button></div><button type="button" class="qback">Back</button></fieldset>
+          <fieldset class="qs" hidden>
+            <legend>Where do we reach you?</legend>
+            <p class="qchip"></p>
+            <div class="qin"><label for="qn">Your name</label><input type="text" id="qn" name="name" autocomplete="name" maxlength="100" required></div>
+            <div class="qin"><label for="qc">Email or WhatsApp number</label><input type="text" id="qc" name="contact" autocomplete="email" maxlength="120" required></div>
+            <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <label class="check"><input type="checkbox" name="newsletter"> Yes, send me the newsletter</label>
+            <div class="msg" id="formMsg" role="status" aria-live="polite"></div>
+            <div class="qact"><button class="btn" type="submit">Send my request</button><button type="button" class="qback">Back</button></div>
+            <p class="legal-note">By sending this you agree that we may use your details to reply to you, as explained in our <a href="/privacy">Privacy Policy</a>.</p>
+          </fieldset>
         </div>
-        <div class="two">
-          <div><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email"></div>
-          <div><label for="phone">Phone / WhatsApp</label><input type="tel" id="phone" name="phone" autocomplete="tel"></div>
+        <div class="qdone" hidden tabindex="-1" role="status">
+          <svg class="qck" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25"/><path d="M15 27l8 8 15-16"/></svg>
+          <h3>Done — we’ll be in touch soon.</h3>
+          <p>Your request is in our inbox.</p>
         </div>
-        <div class="hint">Please give us at least an email or a phone number.</div>
-        <div><label for="message">How can we help?</label><textarea id="message" name="message" required placeholder="Tell us what you want, or ask us a question"></textarea></div>
-        <label class="check"><input type="checkbox" name="newsletter" id="nl"> Yes, send me the newsletter</label>
-        <div class="msg" id="formMsg" role="status" aria-live="polite"></div>
-        <div><button class="btn" type="submit">Send message</button></div>
-        <p class="legal-note">By sending this form you agree that we may use your details to reply to you, as explained in our <a href="/privacy">Privacy Policy</a>.</p>
       </form>
     </div>
 
