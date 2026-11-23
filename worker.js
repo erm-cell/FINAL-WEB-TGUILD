@@ -1,9 +1,10 @@
-// Cloudflare Pages "advanced mode" worker.
-// Serves your static site as normal and handles two form endpoints:
+// Cloudflare Worker (lives at the repo root, NOT inside /public).
+// wrangler.jsonc sends only /api/* requests here; everything else is served from /public.
+//   Form endpoints:
 //   POST /api/quote      -> emails you the 3-step request through Brevo
 //   POST /api/subscribe  -> adds the email to your Brevo newsletter list
 //
-// Set these in Cloudflare Pages > Settings > Variables and Secrets:
+// Set these in your Worker > Settings > Variables and secrets:
 //   BREVO_API_KEY  (secret)  your Brevo API key
 //   TO_EMAIL                 where requests arrive, e.g. cs@tguild.tech
 //   FROM_EMAIL               a sender you verified in Brevo
