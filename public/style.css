@@ -78,10 +78,10 @@ textarea{min-height:130px;resize:vertical}
 .side p{margin:0 0 16px;opacity:.92}
 .side a.line{display:block;color:#fff;text-decoration:none;font-weight:500;padding:5px 0}
 .side a.line:hover{text-decoration:underline}
-.social{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
-.social a{width:48px;height:48px;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-items:center;transition:transform .2s,background .2s}
+.social{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.social a{width:44px;height:44px;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-items:center;transition:transform .2s,background .2s}
 .social a:hover{transform:translateY(-3px);background:var(--yellow);color:var(--ink)}
-.social svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.social svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .social svg .f{fill:currentColor;stroke:none}
 .news{background:var(--yellow);padding:56px 0}
 .news .wrap{display:flex;gap:30px;align-items:center;justify-content:space-between;flex-wrap:wrap}
@@ -241,3 +241,26 @@ header nav.open .btn{color:#fff;text-align:center;padding:12px}
 @keyframes qin{from{opacity:0;transform:translateX(24px)}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @media(prefers-reduced-motion:reduce){.qs,.qdone,.qck,.qck path{animation:none!important}.qck path{stroke-dashoffset:0}.qo,.qact .btn{transition:none}}
+
+/* ---- phone fixes: hero must stack, never sit in two columns ---- */
+@media(max-width:860px){
+.hero .wrap{grid-template-columns:1fr;gap:40px}
+.hero h1{font-size:clamp(44px,13.5vw,68px)}
+.hero p{font-size:18px;max-width:none}
+.stage{width:100%;max-width:520px;margin:0 auto}
+}
+@media(max-width:480px){
+.hero{padding:40px 0 56px}
+.pill{font-size:13px}
+.cta .btn{flex:1 1 100%}
+.trust{gap:8px 16px;font-size:14px}
+.stage{min-height:420px}
+.win .body{min-height:230px}
+}
+
+/* ---- phone fixes: hero must stack (this comes after the hero rules so it wins) ---- */
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:36px}.hero h1{font-size:clamp(44px,12vw,64px)}.hero p{font-size:18px}.stage{width:100%;margin:0 auto}}
+@media(max-width:480px){.fc.b{left:0}.fc.a{right:0}.hero .cta .btn{flex:1 1 100%}.trust{gap:8px 16px}}
+@media(max-width:560px){.stage{min-height:0;max-width:none}.win{position:relative;top:0;left:0;right:0}.fc.a{position:relative;right:auto;top:auto;width:88%;margin:-44px 0 0 auto}.fc.b{position:relative;left:auto;bottom:auto;width:72%;margin:14px 0 0}}
+@media(max-width:480px){.side{padding:26px 22px}.social{gap:8px}.social a{width:40px;height:40px}.social svg{width:20px;height:20px}}
+@media(max-width:380px){.social{gap:6px}.social a{width:36px;height:36px}.social svg{width:18px;height:18px}}
