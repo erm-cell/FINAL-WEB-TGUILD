@@ -92,5 +92,19 @@
   var c = get();
   window.tgConsent = c ? { essential: true, analytics: !!c.analytics } : { essential: true, analytics: false };
   if (!c) banner();
+
+  // Analytics: Cloudflare Web Analytics (no cookies). Paste your token between the quotes.
+  // It only loads after the visitor presses "Accept all". Leave empty to keep analytics off.
+  var CF_TOKEN = "";
+  function analytics() {
+    if (!CF_TOKEN || window.tgCF) return;
+    window.tgCF = true;
+    var s = d.createElement("script");
+    s.defer = true; s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    s.setAttribute("data-cf-beacon", JSON.stringify({ token: CF_TOKEN }));
+    d.head.appendChild(s);
+  }
+  if (window.tgConsent.analytics) analytics();
+  d.addEventListener("tg-consent", function (e) { if (e.detail.analytics) analytics(); });
   d.querySelectorAll("[data-cookie-settings]").forEach(function (b) { b.addEventListener("click", banner); });
 })();
