@@ -264,3 +264,16 @@ header nav.open .btn{color:#fff;text-align:center;padding:12px}
 @media(max-width:560px){.stage{min-height:0;max-width:none}.win{position:relative;top:0;left:0;right:0}.fc.a{position:relative;right:auto;top:auto;width:88%;margin:-44px 0 0 auto}.fc.b{position:relative;left:auto;bottom:auto;width:72%;margin:14px 0 0}}
 @media(max-width:480px){.side{padding:26px 22px}.social{gap:8px}.social a{width:40px;height:40px}.social svg{width:20px;height:20px}}
 @media(max-width:380px){.social{gap:6px}.social a{width:36px;height:36px}.social svg{width:18px;height:18px}}
+
+/* ---- 404 page + invalid fields ---- */
+.hero.nf{min-height:calc(100vh - 68px - 120px);display:grid;align-items:center}
+.hero.nf .wrap{display:block}
+.nfc{margin:0 0 6px;font:700 clamp(110px,26vw,260px)/.85 "Cormorant Garamond",Georgia,serif;color:var(--yellow);letter-spacing:-.03em}
+.hero.nf h1{font-size:clamp(34px,6vw,60px)}
+.nft{margin:14px 0 0;max-width:34em;font-size:18px}
+.hero.nf .cta{margin-top:28px}
+.hero.nf .trust a{color:#fff;text-decoration:underline}
+input[aria-invalid=true]{border-color:#c0392b!important}
+.hero.nf .wrap{width:100%}
+.hero.nf .nfc{margin:0 0 6px;max-width:none;font:700 clamp(110px,26vw,260px)/.85 "Cormorant Garamond",Georgia,serif;color:var(--yellow)}
+.hero.nf .nft{margin:14px 0 0;font-size:18px}
