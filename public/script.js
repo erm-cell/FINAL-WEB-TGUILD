@@ -39,6 +39,8 @@ const L = T[document.documentElement.lang === "id" ? "id" : "en"];
 const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 const phoneOk = v => /^[+()\-\s\d]{8,20}$/.test(v) && v.replace(/\D/g, "").length >= 8 && v.replace(/\D/g, "").length <= 15;
 const show = (el, text, ok) => { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); };
+const bad = (input, el, text) => { input.setAttribute("aria-invalid", "true"); input.focus(); show(el, text, false); };
+document.addEventListener("input", e => { if (e.target.getAttribute && e.target.getAttribute("aria-invalid")) e.target.removeAttribute("aria-invalid"); });
 
 async function post(url, data) {
   const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
@@ -105,8 +107,8 @@ async function post(url, data) {
   f.addEventListener("submit", async e => {
     e.preventDefault();
     const name = f.name.value.trim(), contact = f.contact.value.trim();
-    if (!name) return show(msg, L.nameBad, false);
-    if (!emailOk(contact) && !phoneOk(contact)) return show(msg, L.contactBad, false);
+    if (!name) return bad(f.name, msg, L.nameBad);
+    if (!emailOk(contact) && !phoneOk(contact)) return bad(f.contact, msg, L.contactBad);
     const btn = f.querySelector('button[type="submit"]');
     const data = { name, contact, type: TN[st.type] || "Not sure yet", size: SZ[st.size] || "-", pack: pack() || "-", newsletter: f.newsletter.checked, website: f.website.value, lang: document.documentElement.lang };
     btn.disabled = true; btn.textContent = L.sending; msg.className = "msg";
@@ -132,7 +134,7 @@ async function post(url, data) {
   n.addEventListener("submit", async e => {
     e.preventDefault();
     const v = document.getElementById("newsEmail").value.trim(), msg = document.getElementById("newsMsg");
-    if (!emailOk(v)) return show(msg, L.newsBad, false);
+    if (!emailOk(v)) return bad(document.getElementById("newsEmail"), msg, L.newsBad);
     try { await post(NEWSLETTER_ENDPOINT, { email: v, lang: document.documentElement.lang }); n.reset(); show(msg, L.newsOk, true); }
     catch (err) { show(msg, L.newsFail, false); }
   });
