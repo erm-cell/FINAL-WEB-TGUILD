@@ -277,3 +277,8 @@ input[aria-invalid=true]{border-color:#c0392b!important}
 .hero.nf .wrap{width:100%}
 .hero.nf .nfc{margin:0 0 6px;max-width:none;font:700 clamp(110px,26vw,260px)/.85 "Cormorant Garamond",Georgia,serif;color:var(--yellow)}
 .hero.nf .nft{margin:14px 0 0;font-size:18px}
+
+.tp-wrap{margin-top:20px;background:#fff;border-radius:12px;padding:6px 14px;min-height:52px;display:flex;align-items:center}
+.tp-wrap .trustpilot-widget{width:100%}
+.tp-wrap a{color:var(--blue);font-weight:700}
+.contact{overflow-x:clip}
