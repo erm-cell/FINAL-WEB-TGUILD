@@ -106,5 +106,16 @@
   }
   if (window.tgConsent.analytics) analytics();
   d.addEventListener("tg-consent", function (e) { if (e.detail.analytics) analytics(); });
+    // Trustpilot review widget: loads only after "Accept all"
+  function trustpilot() {
+    if (window.tgTP || !d.querySelector(".trustpilot-widget")) return;
+    window.tgTP = true;
+    var s = d.createElement("script");
+    s.async = true; s.src = "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
+    s.onload = function () { if (window.Trustpilot) d.querySelectorAll(".trustpilot-widget").forEach(function (el) { window.Trustpilot.loadFromElement(el, true); }); };
+    d.head.appendChild(s);
+  }
+  if (window.tgConsent.analytics) trustpilot();
+  d.addEventListener("tg-consent", function (e) { if (e.detail.analytics) trustpilot(); });
   d.querySelectorAll("[data-cookie-settings]").forEach(function (b) { b.addEventListener("click", banner); });
 })();
