@@ -4,7 +4,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy:   Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://widget.trustpilot.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.trustpilot.com; connect-src 'self' https://cloudflareinsights.com https://widget.trustpilot.com; frame-src https://widget.trustpilot.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://widget.trustpilot.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.trustpilot.com; connect-src 'self' https://cloudflareinsights.com https://widget.trustpilot.com; frame-src https://widget.trustpilot.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'
 
 /*.css
   Cache-Control: public, max-age=3600
